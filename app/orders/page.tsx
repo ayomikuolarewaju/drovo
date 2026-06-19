@@ -73,7 +73,7 @@ export default function OrdersPage() {
             <Link href="/" className="px-6 py-3 bg-orange-500 text-white rounded-xl font-bold text-sm hover:bg-orange-600">Browse Stores</Link>
           </div>
         ) : orders.map(order=>{
-          const meta    = order.stores ? CATEGORY_META[order.stores.category as any] : null;
+          const meta    = order.stores ? CATEGORY_META[order.stores.category] : null;
           const statusM = STATUS_META[order.status];
           const isActive= ['pending','confirmed','preparing','ready','on_the_way'].includes(order.status);
           const stepIdx = STATUS_STEPS.indexOf(order.status);
