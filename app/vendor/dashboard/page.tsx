@@ -272,7 +272,7 @@ export default function VendorDashboard() {
                     <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${p.is_available?'bg-green-100 text-green-700':'bg-gray-100 text-gray-500'}`}>
                       {p.is_available?'Available':'Hidden'}
                     </span>
-                    <Link href={`/vendor/products/${p.id}`}
+                    <Link href={`/vendor/products/new?id=${p.id}`}
                       className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:text-blue-500 transition-colors">
                       <Edit3 className="w-4 h-4"/>
                     </Link>

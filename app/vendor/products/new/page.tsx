@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useParams, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { X, Upload, Plus, CheckCircle, AlertCircle } from 'lucide-react';
@@ -24,9 +24,8 @@ const ic = 'w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:bor
 
 function ProductFormInner() {
   const router      = useRouter();
-  const params      = useParams();
   const searchParams= useSearchParams();
-  const editId      = params.id as string | undefined;
+  const editId      = searchParams.get('id') || undefined;
   const isEdit      = !!editId;
   const { user, loading: authLoading } = useAuth();
 
