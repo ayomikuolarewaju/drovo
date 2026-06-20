@@ -340,7 +340,7 @@ function CheckoutInner() {
               <div className="px-5 pb-5">
                 <div className="border-t border-gray-100 pt-4 space-y-1.5 text-sm mb-5">
                   <div className="flex justify-between text-gray-500"><span>Subtotal</span><span>₦{subtotal.toLocaleString()}</span></div>
-                  <div className="flex justify-between text-orange-600 font-semibold"><span>AfriCart fee (10%)</span><span>₦{platformFee.toLocaleString()}</span></div>
+                  <div className="flex justify-between text-orange-600 font-semibold"><span>Drovo fee (10%)</span><span>₦{platformFee.toLocaleString()}</span></div>
                   {!isRealEstate&&<div className="flex justify-between text-gray-500"><span>Delivery</span><span>₦{deliveryFee.toLocaleString()}</span></div>}
                   <div className="flex justify-between font-black text-gray-900 text-base pt-2 border-t border-gray-100">
                     <span>Total</span><span>₦{total.toLocaleString()}</span>
@@ -354,7 +354,7 @@ function CheckoutInner() {
                   }
                 </button>
                 <div className="flex items-center justify-center gap-1 mt-3 text-xs text-gray-400">
-                  <Shield className="w-3 h-3"/> Secured by AfriCart
+                  <Shield className="w-3 h-3"/> Secured by Drovo
                 </div>
               </div>
             </div>

@@ -212,7 +212,7 @@ export default function HomePage() {
             {[
               { step:'01', icon:'🔍', title:'Browse & Discover', desc:'Find food, properties and fashion from verified local vendors in your city.' },
               { step:'02', icon:'🛒', title:'Add & Order', desc:'Add items to your cart and checkout with your delivery address. 10% platform fee applies.' },
-              { step:'03', icon:'🚀', title:'Track & Receive', desc:'Track your order in real-time. Vendor receives 90% after AfriCart deducts its 10% fee.' },
+              { step:'03', icon:'🚀', title:'Track & Receive', desc:'Track your order in real-time. Vendor receives 90% after Drovo deducts its 10% fee.' },
             ].map((s,i)=>(
               <div key={i} className="relative bg-gray-900 rounded-2xl p-6 border border-gray-800">
                 <div className="text-5xl font-black text-gray-800 absolute top-4 right-5 leading-none">{s.step}</div>
@@ -227,12 +227,12 @@ export default function HomePage() {
           <div className="mt-8 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-2xl p-5 border border-orange-500/30">
             <div className="flex items-center gap-3 mb-3">
               <TrendingUp className="w-5 h-5 text-orange-400"/>
-              <span className="font-black text-white">AfriCart Fee Structure</span>
+              <span className="font-black text-white">Drovo Fee Structure</span>
             </div>
             <div className="grid sm:grid-cols-3 gap-3 text-sm">
               {[
                 { label:'Customer Pays', value:'₦10,000', sub:'Full order amount' },
-                { label:'AfriCart (10%)', value:'₦1,000',  sub:'Platform fee' },
+                { label:'Drovo (10%)', value:'₦1,000',  sub:'Platform fee' },
                 { label:'Vendor Gets (90%)', value:'₦9,000',  sub:'Paid to vendor' },
               ].map(r=>(
                 <div key={r.label} className="bg-white/10 rounded-xl p-3 text-center">
@@ -249,7 +249,7 @@ export default function HomePage() {
         <div className="mt-8 bg-gradient-to-r from-orange-500 to-red-600 rounded-3xl p-8 text-center text-white">
           <h2 className="text-2xl md:text-3xl font-black mb-3">Ready to start selling?</h2>
           <p className="text-orange-100 mb-6 max-w-xl mx-auto text-sm">
-            Join hundreds of vendors already selling food, properties and fashion on AfriCart. Set up your store in minutes.
+            Join hundreds of vendors already selling food, properties and fashion on Drovo. Set up your store in minutes.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/auth/signup?role=vendor"

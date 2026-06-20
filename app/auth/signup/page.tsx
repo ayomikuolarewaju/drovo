@@ -54,7 +54,7 @@ function SignupInner() {
           <div className="bg-gradient-to-r from-orange-500 to-red-600 px-8 py-8 text-center">
             <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center mx-auto mb-3"><ShoppingCart className="w-7 h-7 text-white"/></div>
             <h1 className="text-2xl font-black text-white">Create account</h1>
-            <p className="text-orange-100 text-sm mt-1">Join AfriCart today — it's free</p>
+            <p className="text-orange-100 text-sm mt-1">Join Drovo today — it's free</p>
           </div>
           <div className="px-8 py-8">
             <div className="grid grid-cols-2 gap-3 mb-6">
