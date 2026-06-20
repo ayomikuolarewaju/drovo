@@ -206,7 +206,7 @@ export default function HomePage() {
         <div className="mt-16 bg-gray-950 rounded-3xl p-8 md:p-12 text-white">
           <div className="text-center mb-10">
             <span className="text-orange-400 font-bold text-sm uppercase tracking-widest">Simple & Fast</span>
-            <h2 className="text-3xl font-black mt-2 mb-3">How AfriCart Works</h2>
+            <h2 className="text-3xl font-black mt-2 mb-3">How Drovo Works</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
