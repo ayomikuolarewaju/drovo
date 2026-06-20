@@ -44,9 +44,9 @@ function VendorSetupInner() {
     if (authLoading) return;
     if (!isLoggedIn) { router.replace('/auth/login?next=/vendor/setup'); return; }
     if (profile && !isVendor) { router.replace('/'); return; }
-    // Already has a store?
+    // Already has a store? (maybeSingle returns null instead of throwing when 0 rows match)
     if (user) {
-      supabase.from('stores').select('id').eq('vendor_id', user.id).single().then(({ data }) => {
+      supabase.from('stores').select('id').eq('vendor_id', user.id).maybeSingle().then(({ data }) => {
         if (data) router.replace('/vendor/dashboard');
       });
     }
@@ -64,6 +64,14 @@ function VendorSetupInner() {
     if (!user) return;
     setSaving(true); setError('');
     try {
+      // Hard guard: re-check immediately before inserting, in case the
+      // earlier check missed a race (e.g. double-click on submit).
+      const { data: existing } = await supabase.from('stores').select('id').eq('vendor_id', user.id).maybeSingle();
+      if (existing) {
+        router.replace('/vendor/dashboard');
+        return;
+      }
+
       const [logoUrl, coverUrl] = await Promise.all([
         logo  ? upload(logo,  `logos`)  : Promise.resolve(null),
         cover ? upload(cover, `covers`) : Promise.resolve(null),

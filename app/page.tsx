@@ -66,7 +66,7 @@ function StoreCard({ store }: { store: Store }) {
 export default function HomePage() {
   const { totalItems } = useCart();
   const [search,   setSearch]   = useState('');
-  const [city,     setCity]     = useState('Lagos');
+  const [city,     setCity]     = useState('');
   const [activeCat,setActiveCat]= useState<StoreCategory|'all'>('all');
   const [stores,   setStores]   = useState<Store[]>([]);
   const [loading,  setLoading]  = useState(true);
@@ -78,7 +78,8 @@ export default function HomePage() {
     let q = supabase.from('stores').select('*').eq('is_active', true).order('rating', { ascending:false });
     if (activeCat !== 'all') q = q.eq('category', activeCat);
     if (city) q = q.ilike('city', `%${city}%`);
-    const { data } = await q.limit(24);
+    const { data, error } = await q.limit(24);
+    if (error) console.error('fetchStores error:', error);
     setStores(data ?? []);
     setLoading(false);
   }
@@ -120,6 +121,7 @@ export default function HomePage() {
                 <MapPin className="w-4 h-4 text-orange-500"/>
                 <select value={city} onChange={e=>setCity(e.target.value)}
                   className="text-sm text-gray-600 outline-none bg-transparent">
+                  <option value="">All Cities</option>
                   {CITIES.map(c=><option key={c}>{c}</option>)}
                 </select>
               </div>
@@ -188,7 +190,7 @@ export default function HomePage() {
             <StoreIcon className="w-12 h-12 text-gray-200 mx-auto mb-4"/>
             <h3 className="font-black text-gray-700 mb-2">No stores found</h3>
             <p className="text-gray-400 text-sm mb-5">Try a different city or category.</p>
-            <button onClick={()=>{setSearch('');setActiveCat('all');}} className="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-bold text-sm hover:bg-orange-600">Clear filters</button>
+            <button onClick={()=>{setSearch('');setActiveCat('all');setCity('');}} className="px-5 py-2.5 bg-orange-500 text-white rounded-xl font-bold text-sm hover:bg-orange-600">Clear filters</button>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -204,7 +206,7 @@ export default function HomePage() {
         <div className="mt-16 bg-gray-950 rounded-3xl p-8 md:p-12 text-white">
           <div className="text-center mb-10">
             <span className="text-orange-400 font-bold text-sm uppercase tracking-widest">Simple & Fast</span>
-            <h2 className="text-3xl font-black mt-2 mb-3">How Drovo Works</h2>
+            <h2 className="text-3xl font-black mt-2 mb-3">How AfriCart Works</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
@@ -230,7 +232,7 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-3 gap-3 text-sm">
               {[
                 { label:'Customer Pays', value:'₦10,000', sub:'Full order amount' },
-                { label:'Drovo (10%)', value:'₦1,000',  sub:'Platform fee' },
+                { label:'AfriCart (10%)', value:'₦1,000',  sub:'Platform fee' },
                 { label:'Vendor Gets (90%)', value:'₦9,000',  sub:'Paid to vendor' },
               ].map(r=>(
                 <div key={r.label} className="bg-white/10 rounded-xl p-3 text-center">

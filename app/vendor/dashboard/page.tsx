@@ -50,7 +50,7 @@ export default function VendorDashboard() {
 
   async function fetchAll() {
     setLoading(true);
-    const { data: s } = await supabase.from('stores').select('*').eq('vendor_id', user!.id).single();
+    const { data: s } = await supabase.from('stores').select('*').eq('vendor_id', user!.id).order('created_at', { ascending: true }).limit(1).maybeSingle();
     if (!s) { router.replace('/vendor/setup'); return; }
     setStore(s);
     const [pr, or] = await Promise.all([

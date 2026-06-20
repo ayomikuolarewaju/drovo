@@ -51,7 +51,7 @@ function ProductFormInner() {
   }, [authLoading, user]);
 
   async function loadStore() {
-    const { data: storeData } = await supabase.from('stores').select('*').eq('vendor_id', user!.id).single();
+    const { data: storeData } = await supabase.from('stores').select('*').eq('vendor_id', user!.id).order('created_at', { ascending: true }).limit(1).maybeSingle();
     if (!storeData) { router.replace('/vendor/setup'); return; }
     setStore(storeData);
 
