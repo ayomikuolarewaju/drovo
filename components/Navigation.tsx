@@ -158,7 +158,7 @@ export default function Navigation() {
               { href:'/categories/fashion',      label:'👗 Fashion',    active: false },
             ].map(item=>(
               <Link key={item.href} href={item.href}
-                className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:bg-orange-50 hover:text-orange-700 transition-all">
+                className="flex flex-colpx-4 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:bg-orange-50 hover:text-orange-700 transition-all">
                 {item.label}
               </Link>
             ))}
