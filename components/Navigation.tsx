@@ -66,11 +66,11 @@ export default function Navigation() {
           </Link>
 
           {/* Category nav — desktop */}
-          <div className="hidden md:flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-1">
             {[
-              { href:'/?cat=food',        label:'🍛 Food',       active: false },
-              { href:'/?cat=real_estate', label:'🏠 Real Estate', active: false },
-              { href:'/?cat=fashion',     label:'👗 Fashion',    active: false },
+              { href:'/categories/food',        label:'🍛 Food',       active: false },
+              { href:'/categories/real-estate', label:'🏠 Real Estate', active: false },
+              { href:'/categories/fashion',      label:'👗 Fashion',    active: false },
             ].map(item=>(
               <Link key={item.href} href={item.href}
                 className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:bg-orange-50 hover:text-orange-700 transition-all">
