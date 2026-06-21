@@ -152,12 +152,16 @@ export default function Navigation() {
             <motion.div initial={{opacity:0,y:-10}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-10}}
               className="md:hidden absolute top-16 left-0 right-0 bg-white border-b border-orange-100 shadow-xl">
               <div className="px-6 py-4 space-y-1">
-                {[{href:'/?cat=food',label:'🍛 Food & Delivery'},{href:'/?cat=real_estate',label:'🏠 Real Estate'},{href:'/?cat=fashion',label:'👗 Fashion'}].map(item=>(
-                  <Link key={item.href} href={item.href} onClick={()=>setMobileOpen(false)}
-                    className="block py-2.5 px-3 rounded-lg text-sm font-semibold text-gray-700 hover:bg-orange-50 hover:text-orange-700">
-                    {item.label}
-                  </Link>
-                ))}
+                 {[
+              { href:'/categories/food',        label:'🍛 Food',       active: false },
+              { href:'/categories/real-estate', label:'🏠 Real Estate', active: false },
+              { href:'/categories/fashion',      label:'👗 Fashion',    active: false },
+            ].map(item=>(
+              <Link key={item.href} href={item.href}
+                className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:bg-orange-50 hover:text-orange-700 transition-all">
+                {item.label}
+              </Link>
+            ))}
                 <div className="pt-3 border-t border-orange-100 mt-2 space-y-1">
                   {isLoggedIn ? (<>
                     {isVendor&&<Link href="/vendor/dashboard" onClick={()=>setMobileOpen(false)} className="block py-2.5 px-3 rounded-lg text-sm font-bold text-amber-700 hover:bg-amber-50">🏪 Dashboard</Link>}
