@@ -23,3 +23,40 @@ export const CATEGORY_META={
   real_estate:{label:'Real Estate',icon:'🏠',color:'amber',gradient:'from-amber-500 to-yellow-500',deliveryLabel:'viewing',orderLabel:'Book Viewing',productLabel:'Property',orderType:'viewing' as DeliveryType},
   fashion:{label:'Fashion & Fabric',icon:'👗',color:'rose',gradient:'from-rose-500 to-pink-500',deliveryLabel:'delivery',orderLabel:'Order Now',productLabel:'Item',orderType:'delivery' as DeliveryType},
 };
+
+export interface Business {
+  id: string;
+  user_id?: string;
+  business_name: string;
+  category: BusinessCategory;
+  description: string;
+  address: string;
+  city: string;
+  country: string;
+  phone: string;
+  email: string;
+  website?: string;
+  logo_url?: string;
+  cover_image_url?: string;
+  gallery_images?: string[];
+  hours_of_operation?: {
+    monday?: string;
+    tuesday?: string;
+    wednesday?: string;
+    thursday?: string;
+    friday?: string;
+    saturday?: string;
+    sunday?: string;
+  };
+  social_media?: {
+    instagram?: string;
+    facebook?: string;
+    twitter?: string;
+  };
+  rating: number;
+  total_reviews: number;
+  is_verified: boolean;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}

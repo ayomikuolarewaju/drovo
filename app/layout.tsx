@@ -4,6 +4,7 @@ import './globals.css';
 import Navigation from '@/components/Navigation';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { CartProvider } from '@/contexts/CartContext';
+import Footer from '@/components/Footer';
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CartProvider>
             <Navigation />
             <main className="min-h-screen">{children}</main>
+            <Footer />
           </CartProvider>
         </AuthProvider>
       </body>

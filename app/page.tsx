@@ -10,6 +10,7 @@ import {
 import { supabase } from '@/lib/supabase';
 import { Store, CATEGORY_META, StoreCategory } from '@/types';
 import { useCart } from '@/contexts/CartContext';
+import { Business } from '@/types';
 
 const CATEGORIES: { value: StoreCategory; emoji: string; label: string; bg: string; text: string }[] = [
   { value:'food',        emoji:'🍛', label:'Food & Delivery',  bg:'bg-orange-50 border-orange-200', text:'text-orange-700' },
@@ -18,6 +19,19 @@ const CATEGORIES: { value: StoreCategory; emoji: string; label: string; bg: stri
 ];
 
 const CITIES = ['Lagos','Abuja','Port Harcourt','Ibadan','Kano','Accra','Nairobi'];
+
+const STATS = [
+  { value: '400+', label: 'Active Vendors' },
+  { value: '12K+', label: 'Happy Customers' },
+  { value: '6', label: 'African Cities' },
+  { value: '4.8★', label: 'Average Rating' },
+];
+
+const HERO_IMAGES = [
+  'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1400&q=80',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80',
+  'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=80',
+];
 
 function StoreCard({ store }: { store: Store }) {
   const meta = CATEGORY_META[store.category];
@@ -70,8 +84,36 @@ export default function HomePage() {
   const [activeCat,setActiveCat]= useState<StoreCategory|'all'>('all');
   const [stores,   setStores]   = useState<Store[]>([]);
   const [loading,  setLoading]  = useState(true);
+  const [activeHero, setActiveHero] = useState(0);
+   const [featuredFood, setFeaturedFood] = useState<Business[]>([]);
+  const [featuredFashion, setFeaturedFashion] = useState<Business[]>([]);
+  const [featuredRealEstate, setFeaturedRealEstate] = useState<Business[]>([]);
 
   useEffect(() => { fetchStores(); }, [city, activeCat]);
+
+  useEffect(() => {
+    fetchFeatured();
+    const interval = setInterval(() => setActiveHero(h => (h + 1) % 3), 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+    async function fetchFeatured() {
+    try {
+      const [food, fashion, realestate] = await Promise.all([
+        supabase.from('businesses').select('*').eq('category', 'food_delivery').eq('is_active', true).order('rating', { ascending: false }).limit(4),
+        supabase.from('businesses').select('*').eq('category', 'fashion').eq('is_active', true).order('rating', { ascending: false }).limit(4),
+        supabase.from('businesses').select('*').eq('category', 'real_estate').eq('is_active', true).order('rating', { ascending: false }).limit(4),
+      ]);
+      setFeaturedFood(food.data || []);
+      setFeaturedFashion(fashion.data || []);
+      setFeaturedRealEstate(realestate.data || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
 
   async function fetchStores() {
     setLoading(true);
@@ -91,14 +133,88 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero */}
-      <div className="relative bg-gradient-to-br from-orange-600 via-red-600 to-rose-700 text-white pt-[64px]">
-        <div className="absolute inset-0 overflow-hidden">
+
+      {/* ── HERO ─────────────────────────────────── */}
+      <section className="relative h-[580px] md:h-[640px] overflow-hidden">
+        {HERO_IMAGES.map((img, i) => (
+          <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === activeHero ? 'opacity-100' : 'opacity-0'}`}>
+            <img src={img} alt="" className="w-full h-full object-cover" />
+          </div>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+
+        <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/20 border border-orange-400/40 text-orange-200 text-sm font-semibold mb-5 backdrop-blur-sm">
+              <Zap className="w-3.5 h-3.5" /> Africa's fastest-growing marketplace
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black text-white mb-4 leading-tight">
+              Shop Local,<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">
+                Support Africa
+              </span>
+            </h1>
+            <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-10">
+              Discover food, fashion & real estate from trusted local vendors. Fast delivery, verified businesses.
+            </p>
+
+            {/* Search bar */}
+            <div className="flex items-center gap-3 bg-white rounded-2xl p-2 shadow-2xl max-w-2xl w-full mx-auto">
+              <div className="flex items-center gap-2 flex-1 px-3">
+                <Search className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder="Search for food, fashion, properties..."
+                  className="w-full text-sm outline-none text-gray-700 placeholder:text-gray-400"
+                />
+              </div>
+              <div className="hidden sm:flex items-center gap-1 px-3 border-l border-gray-200">
+                <MapPin className="w-4 h-4 text-orange-500" />
+                <select className="text-sm text-gray-600 outline-none bg-transparent">
+                  {CITIES.map(c => <option key={c}>{c}</option>)}
+                </select>
+              </div>
+              <Link
+                href={`/businesses?search=${search}`}
+                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-bold text-sm hover:from-orange-600 hover:to-red-700 transition-all shadow-lg shadow-orange-300/50 whitespace-nowrap"
+              >
+                Search <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </motion.div>
+
+          {/* Hero dot nav */}
+          <div className="absolute bottom-6 flex gap-2">
+            {HERO_IMAGES.map((_, i) => (
+              <button key={i} onClick={() => setActiveHero(i)}
+                className={`w-2 h-2 rounded-full transition-all ${i === activeHero ? 'bg-orange-400 w-6' : 'bg-white/50'}`} />
+            ))}
+          </div>
+        </div>
+      </section>
+          <section className="bg-gradient-to-r from-orange-500 to-red-600 text-white py-5 ">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {STATS.map(stat => (
+              <div key={stat.label} className="text-center">
+                <div className="text-3xl font-black">{stat.value}</div>
+                <div className="text-orange-100 text-sm font-medium">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="relative hidden">
+        {/* <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-10 left-10 w-32 h-32 bg-white/5 rounded-full blur-2xl"/>
           <div className="absolute bottom-0 right-20 w-48 h-48 bg-white/5 rounded-full blur-3xl"/>
-        </div>
+        </div> */}
         <div className="relative max-w-[1200px] mx-auto px-6 py-14 text-center">
           <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{duration:.5}}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/20 text-sm font-semibold mb-5 backdrop-blur-sm">
+            {/* <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 border border-white/20 text-sm font-semibold mb-5 backdrop-blur-sm">
               <Zap className="w-3.5 h-3.5 text-amber-300"/> Africa's unified marketplace
             </div>
             <h1 className="text-4xl md:text-6xl font-black mb-3 leading-tight">
@@ -107,10 +223,13 @@ export default function HomePage() {
             </h1>
             <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
               Order food, browse properties, shop fashion — all from local African vendors.
-            </p>
+            </p> */}
+
+             {/* ── STATS BAR ────────────────────────────── */}
+  
 
             {/* Search bar */}
-            <div className="flex items-center gap-2 bg-white rounded-2xl p-2 shadow-2xl max-w-2xl mx-auto">
+            {/* <div className="flex items-center gap-2 bg-white rounded-2xl p-2 shadow-2xl max-w-2xl mx-auto">
               <div className="flex items-center gap-2 flex-1 px-3">
                 <Search className="w-5 h-5 text-gray-400 flex-shrink-0"/>
                 <input type="text" value={search} onChange={e=>setSearch(e.target.value)}
@@ -128,16 +247,16 @@ export default function HomePage() {
               <button className="px-5 py-2.5 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-bold text-sm hover:from-orange-600 hover:to-red-700 transition-all whitespace-nowrap">
                 Search
               </button>
-            </div>
+            </div> */}
           </motion.div>
         </div>
 
         {/* Wave */}
-        <div className="relative h-8 overflow-hidden">
+        {/* <div className="relative h-8 overflow-hidden">
           <svg viewBox="0 0 1200 32" className="absolute bottom-0 w-full" preserveAspectRatio="none">
             <path d="M0,32 C300,0 900,0 1200,32 L1200,32 L0,32 Z" fill="rgb(249,250,251)"/>
           </svg>
-        </div>
+        </div> */}
       </div>
 
       <div className="max-w-[1200px] mx-auto px-4 py-8">
