@@ -60,3 +60,5 @@ export interface Business {
   created_at: string;
   updated_at: string;
 }
+
+export type BusinessCategory = 'food_delivery' | 'fashion' | 'real_estate';

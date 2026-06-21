@@ -11,6 +11,7 @@ import { supabase } from '@/lib/supabase';
 import { Store, CATEGORY_META, StoreCategory } from '@/types';
 import { useCart } from '@/contexts/CartContext';
 import { Business } from '@/types';
+import { BusinessCategory } from '@/types';
 
 const CATEGORIES: { value: StoreCategory; emoji: string; label: string; bg: string; text: string }[] = [
   { value:'food',        emoji:'🍛', label:'Food & Delivery',  bg:'bg-orange-50 border-orange-200', text:'text-orange-700' },
