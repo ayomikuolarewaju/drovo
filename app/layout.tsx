@@ -2,15 +2,14 @@ import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import Navigation from '@/components/Navigation';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { CartProvider } from '@/contexts/CartContext';
 import Footer from '@/components/Footer';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Drovo — Food, Real Estate & Fashion Marketplace',
-  description: 'Order food, browse properties, shop fashion — all from local African vendors. Fast delivery, secure payments.',
+  title: 'Drovo — Local Food & Grocery Delivery',
+  description: 'Order food, groceries, medicine and essentials from local African vendors. Fast delivery to your doorstep.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -18,11 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={jakarta.className}>
         <AuthProvider>
-          <CartProvider>
-            <Navigation />
-            <main className="min-h-screen">{children}</main>
-            <Footer />
-          </CartProvider>
+          <Navigation />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
         </AuthProvider>
       </body>
     </html>
